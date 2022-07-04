@@ -1,8 +1,14 @@
-let list;
+let list, combosText;
 let edit = false;
 function init() {
     list = document.getElementById("list");
     list.innerHTML = "";
+    combosText = document.getElementById("combosJSON");
+    updateTextArea();
+}
+
+function updateTextArea() {
+    combosText.value = "let combos = " + JSON.stringify(combos);
 }
 
 function populate() {
@@ -20,8 +26,17 @@ function save() {
     combos.forEach((c,i) => {
         c.inputs = document.getElementById("combo" + i).value;
     })
-    console.log("SAVED",JSON.stringify(combos));
+    updateTextArea();
+    copyToClipboard();
     toggleEdit();
+}
+
+function copyToClipboard() {
+    navigator.clipboard.writeText(combosText.value).then(() => {
+        // Alert the user that the action took place.
+        // Nobody likes hidden stuff being done under the hood!
+        console.log("Copied combos to clipboard @ " + new Date(Date.now()).toLocaleString("pt-PT"));
+    });
 }
 
 function toggleEdit() {
